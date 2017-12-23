@@ -90,6 +90,20 @@ def checksum_part2(spreadsheet):
         running_checksum += quotient
     return running_checksum
 
+
+# Day 3
+def steps_part1(inp):
+    """ Calculates the Manhattan Distance of a spiral of value "input" to the center tile (1).
+
+    :param inp: Value in the spiral we are finding the Manhattan distance to 1 of.
+    :return: Minimum amount of steps needed.
+    """
+    count = 1
+    while count ** 2 < inp:
+        count += 2
+    return count // 2 + \
+        min(i for i in [inp - ((count ** 2 - i * (count - 1)) - count // 2) for i in range(4)] if i >= 0)
+
 if __name__ == "__main__":
     # Day 1
     # day1 = file_contents_from_day(1)
@@ -103,4 +117,5 @@ if __name__ == "__main__":
     # print(answer)
 
     # Day 3
-    pass
+    answer = steps_part1(347991)
+    print(answer)
