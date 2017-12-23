@@ -5,8 +5,7 @@ def file_contents_from_day(day):
     :param day: Number of the day whose file we are to open.
     :return: List of each line in the file.
     """
-    with open("inputs/input" + str(day)) as f:
-        return f.readlines()
+    return [line.strip().split("\t") for line in open("inputs/input" + str(day))]
 
 
 # Day 1
@@ -44,11 +43,64 @@ def matching_sum_part2(captcha):
             digit_sum += int(captcha[i])
     return digit_sum
 
+
+# Day 2
+def checksum_part1(spreadsheet):
+    """ Calculates the checksum of a given "spreadsheet". This is done by adding the difference of the maximum
+        and minimum values of each row in the spreadsheet.
+
+    :param spreadsheet: List of lists (containing ints) representing a spreadsheet.
+    :return: Integer checksum of a given spreadsheet.
+    """
+    running_checksum = 0
+    for row in spreadsheet:
+        # Set defaults for the smallest and largest values in a given row.
+        smallest, largest = int(row[0]), int(row[0])
+        for entry in row:
+            if int(entry) > largest:
+                largest = int(entry)
+            elif int(entry) < smallest:
+                smallest = int(entry)
+        running_checksum += (largest - smallest)
+    return running_checksum
+
+
+def checksum_part2(spreadsheet):
+    """ Calculates the checksum of a given "spreadsheet". This is done by summing the quotient for the only two
+        divisible entries in each row.
+
+    :param spreadsheet: List of lists (containing ints) representing a spreadsheet.
+    :return: Integer checksum of a given spreadsheet.
+    """
+    running_checksum = 0
+    for row in spreadsheet:
+        # Sort the row for convenience.
+        row = [int(entry) for entry in row]
+        row = sorted(row, reverse=True)
+        quotient = None
+        # Iterate through every comparision of each entry.
+        for i in range(len(row)):
+            for j in range(i+1, len(row)):
+                if row[i] % row[j] == 0:
+                    quotient = int(row[i] / row[j])
+                    break
+            if quotient is not None:
+                break
+
+        running_checksum += quotient
+    return running_checksum
+
 if __name__ == "__main__":
     # Day 1
     # day1 = file_contents_from_day(1)
-    # answer = matching_sum_part1(day1[0])
-    # answer = matching_sum_part2(day1[0])
+    # answer = matching_sum_part1(day1[0][0])
+    # answer = matching_sum_part2(day1[0][0])
 
     # Day 2
+    # day2 = file_contents_from_day(2)
+    # answer = checksum_part1(day2)
+    # answer = checksum_part2(day2)
+    # print(answer)
+
+    # Day 3
     pass
